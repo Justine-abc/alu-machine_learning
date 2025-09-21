@@ -1,5 +1,5 @@
-
-n that calculates the determinant of a matrix"""
+#!/usr/bin/env python3
+"""Function that calculates the determinant of a matrix"""
 
 
 def determinant(matrix):
@@ -28,9 +28,5 @@ def determinant(matrix):
             det.append(matrix[0][i] * determinant(mini))
         if i % 2 == 1:
             det.append(-1 * matrix[0][i] * determinant(mini))
-n vi:
-# 1. Press 'i' to enter insert mode
-# 2. Type/paste your Python code
-# 3. Press Esc to exit insert mode
-# 4. Type :wq and press Enter to save and quitn vi, save and exit:
-# Press Esc, then type :wq and press Enter    return sum(det)
+    return sum(det)
+
