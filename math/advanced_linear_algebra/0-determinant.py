@@ -29,4 +29,3 @@ def determinant(matrix):
         if i % 2 == 1:
             det.append(-1 * matrix[0][i] * determinant(mini))
     return sum(det)
-
