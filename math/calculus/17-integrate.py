@@ -30,7 +30,8 @@ def poly_integral(poly, C=0):
     # Start with the integration constant
     integral = [C]
 
-    # Calculate integral: coefficient at index i becomes coef/(i+1) at index i+1
+    # Calculate integral: coefficient at index i becomes coef/(i+1)
+    # at index i+1
     for i in range(len(poly)):
         new_coef = poly[i] / (i + 1)
         # Keep as integer if it's a whole number
