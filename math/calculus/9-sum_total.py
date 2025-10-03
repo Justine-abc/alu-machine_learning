@@ -16,8 +16,15 @@ def summation_i_squared(n):
     if not isinstance(n, (int, float)):
         return None
 
+    # Check if n is a boolean (bool is subclass of int, so check first)
+    if isinstance(n, bool):
+        return None
+
     # Check if n is NaN or infinite
-    if n != n or n == float('inf') or n == float('-inf'):
+    try:
+        if n != n or n == float('inf') or n == float('-inf'):
+            return None
+    except (TypeError, ValueError):
         return None
 
     # Check if n is negative
