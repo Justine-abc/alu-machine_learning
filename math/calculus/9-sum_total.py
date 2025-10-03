@@ -15,7 +15,7 @@ def summation_i_squared(n):
     # Check if n is not a valid number (int or float)
     if not isinstance(n, (int, float)):
         return None
-    
+
     # Check if n is NaN or infinite
     if n != n or n == float('inf') or n == float('-inf'):
         return None
