@@ -2,17 +2,17 @@
 """Module for calculating polynomial integrals."""
 
 
-def poly_integral(poly, c=0):
+def poly_integral(poly, C=0):
     """
     Calculate the integral of a polynomial.
 
     Args:
         poly: List of coefficients representing a polynomial
-        c: Integration constant (default 0)
+        C: Integration constant (default 0)
 
     Returns:
         New list of coefficients representing the integral,
-        or None if poly or c is invalid
+        or None if poly or C is invalid
     """
     # Validate poly
     if not isinstance(poly, list) or len(poly) == 0:
@@ -23,12 +23,12 @@ def poly_integral(poly, c=0):
         if not isinstance(coef, (int, float)):
             return None
 
-    # Validate c
-    if not isinstance(c, (int, float)):
+    # Validate C
+    if not isinstance(C, (int, float)):
         return None
 
     # Start with the integration constant
-    integral = [c]
+    integral = [C]
 
     # Calculate integral: coefficient at index i becomes coef/(i+1) at index i+1
     for i in range(len(poly)):
