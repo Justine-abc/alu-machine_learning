@@ -1,15 +1,29 @@
 #!/usr/bin/env python3
+"""Module for calculating sum of squares."""
+
+
 def summation_i_squared(n):
+    """
+    Calculate the sum of squares from i=1 to n.
+
+    Args:
+        n: The stopping condition (upper limit)
+
+    Returns:
+        Integer value of the sum, or None if n is invalid
+    """
     # Check if n is a valid number
-    if not isinstance(n, (int, float)) or n < 0:
+    if not isinstance(n, (int, float)):
         return None
-    
+
+    # Check if n is negative
+    if n < 0:
+        return None
+
     # Convert to integer
     n = int(n)
-    
-    # Base case: if n is 0, return 0
-    if n == 0:
-        return 0
-    
-    # Recursive case: n² + sum of squares from 1 to (n-1)
-    return n * n + summation_i_squared(n - 1)
+
+    # Use the mathematical formula: n(n+1)(2n+1)/6
+    result = n * (n + 1) * (2 * n + 1) // 6
+
+    return result
