@@ -1,4 +1,7 @@
-s module contains a function that
+#!/usr/bin/env python3
+
+"""
+This module contains a function that
 calculates the marginal probability of
 obtaining the data
 """
