@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+
+
 """0-neuron.py: Single neuron for binary classification"""
 
 import numpy as np
