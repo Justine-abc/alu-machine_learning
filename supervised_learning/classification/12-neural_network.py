@@ -90,7 +90,10 @@ class NeuralNetwork:
             float: Logistic regression cost
         """
         m = Y.shape[1]
-        return - (1 / m) * np.sum(Y * np.log(A) + (1 - Y) * np.log(1.0000001 - A))
+        cost = - (1 / m) * (
+            np.sum(Y * np.log(A) + (1 - Y) * np.log(1.0000001 - A))
+        )
+        return cost
 
     def evaluate(self, X, Y):
         """Evaluates the neural network’s predictions.
