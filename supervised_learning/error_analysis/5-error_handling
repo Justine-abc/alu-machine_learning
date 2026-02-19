@@ -1,1 +1,4 @@
--e "B,D\nB,D\nA,C,E\nF" 
+A,B,D 
+A,B,D 
+B,C,E 
+F 
