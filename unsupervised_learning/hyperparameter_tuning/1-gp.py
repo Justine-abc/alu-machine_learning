@@ -5,9 +5,17 @@ import numpy as np
 
 
 class GaussianProcess:
-    """Noiseless 1D Gaussian Process"""
+    """Represents a noiseless 1D Gaussian Process"""
 
     def __init__(self, X_init, Y_init, l=1, sigma_f=1):
+        """
+        Initializes the Gaussian Process.
+
+        X_init: numpy.ndarray of shape (t, 1)
+        Y_init: numpy.ndarray of shape (t, 1)
+        l: length parameter
+        sigma_f: standard deviation
+        """
         self.X = X_init
         self.Y = Y_init
         self.l = l
@@ -15,13 +23,35 @@ class GaussianProcess:
         self.K = self.kernel(self.X, self.X)
 
     def kernel(self, X1, X2):
-        sqdist = np.sum(X1**2, 1).reshape(-1, 1) + \
-                 np.sum(X2**2, 1) - 2 * np.matmul(X1, X2.T)
+        """
+        Calculates the covariance kernel matrix
+        using the Radial Basis Function (RBF).
 
-        return self.sigma_f**2 * np.exp(-0.5 / self.l**2 * sqdist)
+        X1: numpy.ndarray of shape (m, 1)
+        X2: numpy.ndarray of shape (n, 1)
+
+        Returns: numpy.ndarray of shape (m, n)
+        """
+        sqdist = (
+            np.sum(X1 ** 2, axis=1).reshape(-1, 1) +
+            np.sum(X2 ** 2, axis=1) -
+            2 * np.matmul(X1, X2.T)
+        )
+
+        return self.sigma_f ** 2 * np.exp(
+            -0.5 * sqdist / (self.l ** 2)
+        )
 
     def predict(self, X_s):
-        """Predict mean and variance"""
+        """
+        Predicts the mean and variance of points.
+
+        X_s: numpy.ndarray of shape (s, 1)
+
+        Returns:
+        mu: numpy.ndarray of shape (s,)
+        sigma: numpy.ndarray of shape (s,)
+        """
         K_s = self.kernel(self.X, X_s)
         K_ss = self.kernel(X_s, X_s)
         K_inv = np.linalg.inv(self.K)
