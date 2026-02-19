@@ -16,12 +16,10 @@ class GaussianProcess:
 
     def kernel(self, X1, X2):
         """Radial Basis Function kernel"""
-        sqdist = (
-            np.sum(X1 ** 2, axis=1).reshape(-1, 1)
-            + np.sum(X2 ** 2, axis=1)
-            - 2 * np.matmul(X1, X2.T)
-        )
+        sqdist = np.sum(X1 ** 2, axis=1).reshape(-1, 1) + \
+            np.sum(X2 ** 2, axis=1) - \
+            2 * np.matmul(X1, X2.T)
 
         return self.sigma_f ** 2 * np.exp(
-            -0.5 / (self.l ** 2) * sqdist
+            -0.5 * sqdist / (self.l ** 2)
         )
