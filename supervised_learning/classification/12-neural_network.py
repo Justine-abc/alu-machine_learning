@@ -1,31 +1,31 @@
 #!/usr/bin/env python3
-"""12. NeuralNetwork with one hidden layer performing binary classification"""
+""" Neural Network
+"""
 
 import numpy as np
 
 
 class NeuralNetwork:
-    """Defines a neural network with one hidden layer for binary classification."""
+    """ Class that defines a neural network with one hidden layer performing
+        binary classification.
+    """
 
     def __init__(self, nx, nodes):
-        """Initialize the neural network.
+        """ Instantiation function
 
         Args:
-            nx (int): Number of input features.
-            nodes (int): Number of nodes in the hidden layer.
-
-        Raises:
-            TypeError: If nx or nodes is not an integer.
-            ValueError: If nx or nodes is less than 1.
+            nx (int): size of the input layer
+            nodes (_type_): _description_
         """
         if not isinstance(nx, int):
-            raise TypeError("nx must be an integer")
+            raise TypeError('nx must be an integer')
         if nx < 1:
-            raise ValueError("nx must be a positive integer")
+            raise ValueError('nx must be a positive integer')
+
         if not isinstance(nodes, int):
-            raise TypeError("nodes must be an integer")
+            raise TypeError('nodes must be an integer')
         if nodes < 1:
-            raise ValueError("nodes must be a positive integer")
+            raise ValueError('nodes must be a positive integer')
 
         self.__W1 = np.random.randn(nodes, nx)
         self.__b1 = np.zeros((nodes, 1))
@@ -34,78 +34,68 @@ class NeuralNetwork:
         self.__b2 = 0
         self.__A2 = 0
 
+    # getter functions
     @property
     def W1(self):
-        """Getter for hidden layer weights."""
+        """Return weights vector for hidden layer"""
         return self.__W1
 
     @property
     def b1(self):
-        """Getter for hidden layer bias."""
+        """Return bias for hidden layer"""
         return self.__b1
 
     @property
     def A1(self):
-        """Getter for hidden layer activated output."""
+        """Return activated output for hidden layer"""
         return self.__A1
 
     @property
     def W2(self):
-        """Getter for output neuron weights."""
+        """Return weights vector for output neuron"""
         return self.__W2
 
     @property
     def b2(self):
-        """Getter for output neuron bias."""
+        """Return bias for the output neuron"""
         return self.__b2
 
     @property
     def A2(self):
-        """Getter for output neuron activated output (prediction)."""
+        """Return activated output for the output neuron"""
         return self.__A2
 
     def forward_prop(self, X):
-        """Calculates forward propagation of the neural network.
+        """ Calculates the forward propagation of the neural network
 
         Args:
-            X (numpy.ndarray): Input data with shape (nx, m).
-
-        Returns:
-            tuple: Activated outputs of hidden layer and output neuron (__A1, __A2)
+            X (numpy.array): Input data with shape (nx, m)
         """
-        z1 = np.dot(self.__W1, X) + self.__b1
-        self.__A1 = 1 / (1 + np.exp(-z1))  # Sigmoid activation
-        z2 = np.dot(self.__W2, self.__A1) + self.__b2
-        self.__A2 = 1 / (1 + np.exp(-z2))  # Sigmoid activation
+        z = np.matmul(self.__W1, X) + self.__b1
+        sigmoid = 1 / (1 + np.exp(-z))
+        self.__A1 = sigmoid
+        z = np.matmul(self.__W2, self.__A1) + self.__b2
+        sigmoid = 1 / (1 + np.exp(-z))
+        self.__A2 = sigmoid
         return self.__A1, self.__A2
 
     def cost(self, Y, A):
-        """Calculates the cost using logistic regression.
+        """ Calculates the cost of the model using logistic regression
 
         Args:
-            Y (numpy.ndarray): Correct labels with shape (1, m)
-            A (numpy.ndarray): Activated output of the neuron for each example
-
-        Returns:
-            float: Logistic regression cost
+            Y (_type_): _description_
+            A (_type_): _description_
         """
-        m = Y.shape[1]
-        cost = - (1 / m) * (
-            np.sum(Y * np.log(A) + (1 - Y) * np.log(1.0000001 - A))
-        )
+        loss = -(Y * np.log(A) + (1 - Y) * np.log(1.0000001 - A))
+        cost = np.mean(loss)
         return cost
 
     def evaluate(self, X, Y):
-        """Evaluates the neural network’s predictions.
+        """ Evaluates the neural network’s predictions
 
         Args:
-            X (numpy.ndarray): Input data with shape (nx, m)
-            Y (numpy.ndarray): Correct labels with shape (1, m)
-
-        Returns:
-            tuple: The predicted labels and the cost of the network
+            X (_type_): _description_
+            Y (_type_): _description_
         """
         self.forward_prop(X)
-        predictions = np.where(self.__A2 >= 0.5, 1, 0)
-        cost = self.cost(Y, self.__A2)
-        return predictions, cost
+        return np.where(self.__A2 >= 0.5, 1, 0), self.cost(Y, self.__A2)
