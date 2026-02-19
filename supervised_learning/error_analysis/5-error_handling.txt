@@ -1,4 +1,4 @@
-B,C,D,E
-B,D
-C,E
-F
+B,D  # 1. High Bias, High Variance → try a different architecture, build a deeper network
+B,D  # 2. High Bias, Low Variance → try a different architecture, build a deeper network
+A,C,E  # 3. Low Bias, High Variance → train more, get more data, use regularization
+F  # 4. Low Bias, Low Variance → nothing
