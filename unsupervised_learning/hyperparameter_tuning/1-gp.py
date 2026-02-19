@@ -14,7 +14,7 @@ class GaussianProcess:
         X_init: numpy.ndarray of shape (t, 1)
         Y_init: numpy.ndarray of shape (t, 1)
         l: length parameter
-        sigma_f: standard deviation
+        sigma_f: standard deviation parameter
         """
         self.X = X_init
         self.Y = Y_init
@@ -30,13 +30,14 @@ class GaussianProcess:
         X1: numpy.ndarray of shape (m, 1)
         X2: numpy.ndarray of shape (n, 1)
 
-        Returns: numpy.ndarray of shape (m, n)
+        Returns:
+        numpy.ndarray of shape (m, n)
         """
-        sqdist = (
-            np.sum(X1 ** 2, axis=1).reshape(-1, 1) +
-            np.sum(X2 ** 2, axis=1) -
-            2 * np.matmul(X1, X2.T)
-        )
+        x1_sq = np.sum(X1 ** 2, axis=1).reshape(-1, 1)
+        x2_sq = np.sum(X2 ** 2, axis=1)
+        cross = 2 * np.matmul(X1, X2.T)
+
+        sqdist = x1_sq + x2_sq - cross
 
         return self.sigma_f ** 2 * np.exp(
             -0.5 * sqdist / (self.l ** 2)
@@ -44,7 +45,8 @@ class GaussianProcess:
 
     def predict(self, X_s):
         """
-        Predicts the mean and variance of points.
+        Predicts the mean and variance of points
+        in the Gaussian Process.
 
         X_s: numpy.ndarray of shape (s, 1)
 
