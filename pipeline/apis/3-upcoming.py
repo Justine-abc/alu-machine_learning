@@ -12,13 +12,11 @@ if __name__ == '__main__':
     response = requests.get(url)
 
     if response.status_code != 200:
-        print("Error fetching launches")
-        exit(1)
+        exit(0)
 
     launches = response.json()
 
     if not launches:
-        print("No upcoming launches")
         exit(0)
 
     # Sort by date_unix, pick the soonest
@@ -32,23 +30,27 @@ if __name__ == '__main__':
     launchpad_id = launch.get("launchpad")
 
     # Get rocket name
-    rocket_resp = requests.get(
-        "https://api.spacexdata.com/v4/rockets/{}".format(rocket_id)
-    )
-    rocket_name = rocket_resp.json().get("name") if rocket_resp.status_code == 200 else "Unknown"
+    r_url = "https://api.spacexdata.com/v4/rockets/{}"
+    rocket_resp = requests.get(r_url.format(rocket_id))
+    r_json = rocket_resp.json()
+    rocket_name = r_json.get("name") if rocket_resp.status_code == 200 else ""
 
     # Get launchpad info
-    pad_resp = requests.get(
-        "https://api.spacexdata.com/v4/launchpads/{}".format(launchpad_id)
-    )
+    p_url = "https://api.spacexdata.com/v4/launchpads/{}"
+    pad_resp = requests.get(p_url.format(launchpad_id))
     if pad_resp.status_code == 200:
         pad_data = pad_resp.json()
         pad_name = pad_data.get("name")
         pad_locality = pad_data.get("locality")
     else:
-        pad_name = "Unknown"
-        pad_locality = "Unknown"
+        pad_name = ""
+        pad_locality = ""
 
+    # Print formatted output (multi-line to pass Pycodestyle E501)
     print("{} ({}) {} - {} ({})".format(
-        name, date_local, rocket_name, pad_name, pad_locality
+        name,
+        date_local,
+        rocket_name,
+        pad_name,
+        pad_locality
     ))
